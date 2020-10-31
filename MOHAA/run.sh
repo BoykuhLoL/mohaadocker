@@ -1,7 +1,6 @@
 #!/bin/bash
 # todo: copy all pk3s in env variable 'MOHCFG_MODS'?
 
-chmod -rwx /bin/bash
 # Replace all config placeholders with environment variables
 sed -Ei "s/cfg.sv_hostname/${MOHCFG_HOSTNAME}/g" server-env.cfg
 sed -Ei "s/cfg.rconpassword/${MOHCFG_RCONPASS}/g" server-env.cfg
