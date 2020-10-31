@@ -8,5 +8,5 @@ COPY MOHAA /opt/MOHAA
 WORKDIR /opt/MOHAA
 RUN chmod +rwx mohaa_lnxded run.sh
 RUN chmod +rwx /opt/MOHAA
-EXPOSE {SERVER_PORT}/udp
+EXPOSE 12203/udp
 CMD ./run.sh
