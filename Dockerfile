@@ -7,5 +7,6 @@ RUN apt install -y libstdc++5 libstdc++5:i386
 COPY MOHAA /opt/MOHAA
 WORKDIR /opt/MOHAA
 RUN chmod +rwx mohaa_lnxded run.sh
-EXPOSE 12203/udp
+RUN chmod +rwx /opt/MOHAA
+EXPOSE {SERVER_PORT}/udp
 CMD ./run.sh
