@@ -4,4 +4,4 @@ USER container
 ENV  USER=container HOME=/home/container
 WORKDIR /home/container
 COPY ./MOHAA /MOHAA
-RUN chmod 777 /home/container
+RUN chmod -R 777 /home/container
