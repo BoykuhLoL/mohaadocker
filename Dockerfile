@@ -4,5 +4,3 @@ RUN apk add --no-cache --update curl ca-certificates openssl git tar bash sqlite
 USER container
 ENV  USER=container HOME=/home/container
 WORKDIR /home/container
-COPY ./MOHAA /MOHAA
-CMD ["/bin/bash", "/run.sh"]
