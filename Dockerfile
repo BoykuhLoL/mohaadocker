@@ -1,11 +1,9 @@
 FROM debian:stretch-slim
-LABEL maintainer="boykuh"
-LABEL description="MOHAA Server docker image"
-COPY MOHAA /home/container
+RUN apk add --no-cache --update curl ca-certificates openssl git tar bash sqlite fontconfig \
+    && adduser -D -h /home/container container
+USER container
+ENV  USER=container HOME=/home/container
 WORKDIR /home/container
-ENV USER=container HOME=/home/container
-RUN dpkg --add-architecture i386
-RUN apt update
-RUN apt install -y libstdc++5 libstdc++5:i386
-COPY MOHAA /home/container
-RUN chmod +x mohaa_lnxded
+COPY ./MOHAA /MOHAA
+RUN chmod +x mohaa_lnxded run.sh
+CMD ./run.sh
