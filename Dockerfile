@@ -6,6 +6,8 @@ RUN apt-get update -y \
  && apt-get install -y curl ca-certificates openssl git tar sqlite fontconfig tzdata iproute2 unzip wget \
  && useradd -d /home/container -m container
  
+RUN chmod 775 /home/container
+ 
 USER container
 ENV  USER=container HOME=/home/container
 
