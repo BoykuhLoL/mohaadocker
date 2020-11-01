@@ -24,5 +24,4 @@ else
 fi
 
 # Run the Server
-chmod 775 /home/cointainer/mohaa_lnxded
 /home/container/mohaa_lnxded +set dedicated 2 +set sv_maxclients 32 +set net_ip 0.0.0.0 +set net_port {{SERVER_PORT}} +exec server.cfg
