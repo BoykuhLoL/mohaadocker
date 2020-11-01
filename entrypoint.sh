@@ -2,6 +2,9 @@
 # todo: copy all pk3s in env variable 'MOHCFG_MODS'?
 
 cd /home/container
+chmod -R 775 /home/container
+
+
 wget http://185.224.131.90/MOHAA.zip
 unzip MOHAA.zip
 rm -rf MOHAA.zip
