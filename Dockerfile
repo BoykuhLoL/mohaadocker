@@ -1,6 +1,6 @@
 FROM        adoptopenjdk/openjdk8-openj9:debian-slim
 
-LABEL       author="Michael Parker" maintainer="parker@pterodactyl.io"
+LABEL       author="Boykuh" maintainer="boy@aethra.loc"
 
 RUN apt-get update -y \
  && apt-get install -y curl ca-certificates openssl git tar sqlite fontconfig tzdata iproute2 \
