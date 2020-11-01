@@ -20,3 +20,6 @@ if [[ "${MOHCFG_REALISM}" = "true" ]]; then
 else
   cp paks/User_sbdefault.pk3 main/
 fi
+
+# Run the Server
+${MODIFIED_STARTUP}
