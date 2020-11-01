@@ -1,30 +1,36 @@
 #!/bin/bash
-# todo: copy all pk3s in env variable 'MOHCFG_MODS'?
-
 cd /home/container
-chmod -R 775 /home/container
+sleep 1
+# Make internal Docker IP address available to processes.
+export INTERNAL_IP=`ip route get 1 | awk '{print $NF;exit}'`
 
-
-wget http://185.224.131.90/MOHAA.zip
-unzip MOHAA.zip
-rm -rf MOHAA.zip
-
-
-
-# Replace all config placeholders with environment variables
-sed -Ei "s/cfg.sv_hostname/${MOHCFG_HOSTNAME}/g" server-env.cfg
-sed -Ei "s/cfg.rconpassword/${MOHCFG_RCONPASS}/g" server-env.cfg
-sed -Ei "s/cfg.password/${MOHCFG_PASSWORD}/g" server-env.cfg
-
-# Copy the server config file into place
-cp server-env.cfg main/server.cfg
-
-# Copy realism if required
-if [[ "${MOHCFG_REALISM}" = "true" ]]; then
-  cp paks/User_sbrealism.pk3 main/
+## just in case someone removed the defaults.
+if [ "${STEAM_USER}" == "" ]; then
+    echo -e "steam user is not set.\n"
+    echo -e "Using anonymous user.\n"
+    STEAM_USER=anonymous
+    STEAM_PASS=""
+    STEAM_AUTH=""
 else
-  cp paks/User_sbdefault.pk3 main/
+    echo -e "user set to ${STEAM_USER}"
 fi
 
+## if auto_update is not set or to 1 update
+if [ -z ${AUTO_UPDATE} ] || [ "${AUTO_UPDATE}" == "1" ]; then 
+    # Update Source Server
+    if [ ! -z ${SRCDS_APPID} ]; then
+        ./steamcmd/steamcmd.sh +login ${STEAM_USER} ${STEAM_PASS} ${STEAM_AUTH}  +force_install_dir /home/container +app_update ${SRCDS_APPID} $( [[ -z ${SRCDS_BETAID} ]] || printf %s "-beta ${SRCDS_BETAID}" ) $( [[ -z ${SRCDS_BETAPASS} ]] || printf %s "-betapassword ${SRCDS_BETAPASS}" ) $( [[ -z ${HLDS_GAME} ]] || printf %s "+app_set_config 90 mod ${HLDS_GAME}" ) $( [[ -z ${VALIDATE} ]] || printf %s "validate" ) +quit
+    else
+        echo -e "No appid set. Starting Server"
+    fi
+
+else
+    echo -e "Not updating game server as auto update was set to 0. Starting Server"
+fi
+
+# Replace Startup Variables
+MODIFIED_STARTUP=$(echo ${STARTUP} | sed -e 's/{{/${/g' -e 's/}}/}/g')
+echo -e ":/home/container$ ${MODIFIED_STARTUP}"
+
 # Run the Server
-/home/container/mohaa_lnxded +set dedicated 2 +set sv_maxclients 32 +set net_ip 0.0.0.0 +set net_port {{SERVER_PORT}} +exec server.cfg
+eval ${MODIFIED_STARTUP}
