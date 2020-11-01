@@ -2,9 +2,13 @@
 # todo: copy all pk3s in env variable 'MOHCFG_MODS'?
 
 cd /home/container
+
+if [ ! -f mohaa_lnxded ]; then
 wget http://185.224.131.90/MOHAA.zip
 unzip MOHAA.zip
 rm MOHAA.zip
+fi
+
 
 # Replace all config placeholders with environment variables
 sed -Ei "s/cfg.sv_hostname/${MOHCFG_HOSTNAME}/g" server-env.cfg
@@ -22,4 +26,5 @@ else
 fi
 
 # Run the Server
+chmod +x mohaa_lnxded
 ${MODIFIED_STARTUP}
